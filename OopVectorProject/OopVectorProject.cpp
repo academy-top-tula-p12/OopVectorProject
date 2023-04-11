@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <cassert>
 
 class Vector
 {
@@ -19,6 +20,8 @@ public:
     int RemoveAt(int index);
 
     int& At(int index);
+
+    int& operator[](int index);
 
 
     ~Vector()
@@ -85,7 +88,29 @@ int& Vector::At(int index)
     return items[index];
 }
 
+int& Vector::operator[](int index)
+{
+    assert(index >= 0 && index < size);
+
+    return items[index];
+}
+
 int main()
 {
     Vector v(3);
+    
+    v.At(0) = 10;
+    std::cout << v.At(0) << "\n";
+
+    v[1] = 20;
+    std::cout << v[1] << "\n";
+
+    //v[100] = 10;
+
+    Vector* vptr = new Vector(2);
+
+    (*vptr)[0] = 10;
+
+    delete vptr;
+    
 }
