@@ -85,14 +85,14 @@ int Vector::RemoveAt(int index)
 
 int& Vector::At(int index)
 {
+    assert(index >= 0 && index < size);
+
     return items[index];
 }
 
 int& Vector::operator[](int index)
 {
-    assert(index >= 0 && index < size);
-
-    return items[index];
+    return this->At(index);
 }
 
 int main()
@@ -110,6 +110,8 @@ int main()
     Vector* vptr = new Vector(2);
 
     (*vptr)[0] = 10;
+
+    vptr->At(0) = 10;
 
     delete vptr;
     
