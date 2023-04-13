@@ -145,8 +145,8 @@ int main()
 
     //VectorPrint(v);
 
-    Vector v2;
-    v2 = v;
+    Vector v2, v3;
+    v3 = v2 = v;
 
     //VectorPrint(v);
 
