@@ -9,8 +9,29 @@ public:
     Vector() : Vector(0) {}
     Vector(int size) : size{ size }
     {
+        std::cout << this << " Vector construct\n";
         items = new int[size];
     }
+    Vector(const Vector& v)
+    {
+        std::cout << this << " Vector copy construct\n";
+        size = v.size;
+        items = new int[size];
+        for (int i = 0; i < size; i++)
+            items[i] = v.items[i];
+    }
+
+    Vector operator=(const Vector& v)
+    {
+        size = v.size;
+        
+        delete[] items;
+        items = new int[size];
+        for (int i = 0; i < size; i++)
+            items[i] = v.items[i];
+        return *this;
+    }
+
 
     int Size();
 
@@ -26,6 +47,7 @@ public:
 
     ~Vector()
     {
+        std::cout << this << " Vector destruct\n";
         delete[] items;
     }
 };
@@ -95,24 +117,54 @@ int& Vector::operator[](int index)
     return this->At(index);
 }
 
+void VectorPrint(Vector v)
+{
+    for (int i = 0; i < v.Size(); i++)
+        std::cout << v[i] << " ";
+    std::cout << "\n";
+}
+
+Vector VectorInit(int size)
+{
+    Vector v(size);
+    for (int i = 0; i < v.Size(); i++)
+        v[i] = rand() % 100;
+    return v;
+}
+
+
 int main()
 {
-    Vector v(3);
+    srand(time(nullptr));
+
+    Vector v = VectorInit(3);
+    /*for (int i = 0; i < v.Size(); i++)
+        v[i] = rand() % 100;*/
+    //v = VectorInit(3);
     
-    v.At(0) = 10;
-    std::cout << v.At(0) << "\n";
 
-    v[1] = 20;
-    std::cout << v[1] << "\n";
+    //VectorPrint(v);
 
-    //v[100] = 10;
+    Vector v2;
+    v2 = v;
 
-    Vector* vptr = new Vector(2);
+    //VectorPrint(v);
 
-    (*vptr)[0] = 10;
+    
+    //v.At(0) = 10;
+    //std::cout << v.At(0) << "\n";
 
-    vptr->At(0) = 10;
+    //v[1] = 20;
+    //std::cout << v[1] << "\n";
 
-    delete vptr;
+    ////v[100] = 10;
+
+    //Vector* vptr = new Vector(2);
+
+    //(*vptr)[0] = 10;
+
+    //vptr->At(0) = 10;
+
+    //delete vptr;
     
 }
