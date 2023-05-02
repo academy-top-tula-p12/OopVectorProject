@@ -1,32 +1,39 @@
 ﻿#include <iostream>
 #include <cassert>
 
+class User
+{
+
+};
+
+
+template <class T>
 class Vector
 {
     int size;
-    int* items;
+    T* items;
 public:
     Vector() : Vector(0) {}
     Vector(int size) : size{ size }
     {
         std::cout << this << " Vector construct\n";
-        items = new int[size];
+        items = new T[size];
     }
-    Vector(const Vector& v)
+    Vector(const Vector<T>& v)
     {
         std::cout << this << " Vector copy construct\n";
         size = v.size;
-        items = new int[size];
+        items = new T[size];
         for (int i = 0; i < size; i++)
             items[i] = v.items[i];
     }
 
-    Vector operator=(const Vector& v)
+    Vector operator=(const Vector<T>& v)
     {
         size = v.size;
         
         delete[] items;
-        items = new int[size];
+        items = new T[size];
         for (int i = 0; i < size; i++)
             items[i] = v.items[i];
         return *this;
@@ -35,14 +42,14 @@ public:
 
     int Size();
 
-    void Push(int value);
-    void Insert(int index, int value);
-    int Pop();
-    int RemoveAt(int index);
+    void Push(T value);
+    void Insert(int index, T value);
+    T Pop();
+    T RemoveAt(int index);
 
-    int& At(int index);
+    T& At(int index);
 
-    int& operator[](int index);
+    T& operator[](int index);
 
 
     ~Vector()
@@ -51,13 +58,13 @@ public:
         delete[] items;
     }
 };
+template <class T>
+int Vector<T>::Size() { return size; }
 
-int Vector::Size() { return size; }
-
-
-void Vector::Push(int value)
+template <class T>
+void Vector<T>::Push(T value)
 {
-    int* newItems = new int[size + 1];
+    T* newItems = new T[size + 1];
     for (int i = 0; i < size; i++)
         newItems[i] = items[i];
     newItems[size] = value;
@@ -66,9 +73,10 @@ void Vector::Push(int value)
     size++;
 }
 
-void Vector::Insert(int index, int value)
+template <class T>
+void Vector<T>::Insert(int index, T value)
 {
-    int* newItems = new int[size + 1];
+    T* newItems = new T[size + 1];
     for(int i = 0; i < index; i++)
         newItems[i] = items[i];
     newItems[index] = value;
@@ -79,10 +87,11 @@ void Vector::Insert(int index, int value)
     size++;
 }
 
-int Vector::Pop()
+template <class T>
+T Vector<T>::Pop()
 {
-    int value = items[size - 1];
-    int* newItems = new int[size - 1];
+    T value = items[size - 1];
+    T* newItems = new T[size - 1];
     for (int i = 0; i < size - 1; i++)
         newItems[i] = items[i];
     delete[] items;
@@ -91,10 +100,11 @@ int Vector::Pop()
     return value;
 }
 
-int Vector::RemoveAt(int index)
+template <class T>
+T Vector<T>::RemoveAt(int index)
 {
-    int value = items[index];
-    int* newItems = new int[size - 1];
+    T value = items[index];
+    T* newItems = new T[size - 1];
     for (int i = 0; i < index; i++)
         newItems[i] = items[i];
     for (int i = index; i < size - 1; i++)
@@ -105,28 +115,31 @@ int Vector::RemoveAt(int index)
     return value;
 }
 
-int& Vector::At(int index)
+template <class T>
+T& Vector<T>::At(int index)
 {
     assert(index >= 0 && index < size);
 
     return items[index];
 }
 
-int& Vector::operator[](int index)
+template <class T>
+T& Vector<T>::operator[](int index)
 {
     return this->At(index);
 }
 
-void VectorPrint(Vector v)
+
+void VectorPrint(Vector<int> v)
 {
     for (int i = 0; i < v.Size(); i++)
         std::cout << v[i] << " ";
     std::cout << "\n";
 }
 
-Vector VectorInit(int size)
+Vector<int> VectorInit(int size)
 {
-    Vector v(size);
+    Vector<int> v(size);
     for (int i = 0; i < v.Size(); i++)
         v[i] = rand() % 100;
     return v;
@@ -137,7 +150,9 @@ int main()
 {
     srand(time(nullptr));
 
-    Vector v = VectorInit(3);
+    Vector<int> v = VectorInit(3);
+    Vector<float> vfl;
+    Vector<User> users;
     /*for (int i = 0; i < v.Size(); i++)
         v[i] = rand() % 100;*/
     //v = VectorInit(3);
@@ -145,7 +160,7 @@ int main()
 
     //VectorPrint(v);
 
-    Vector v2, v3;
+    Vector<int> v2, v3;
     v3 = v2 = v;
 
     //VectorPrint(v);
